@@ -6,13 +6,13 @@ const cardSelectedColor = "rgb(0, 110, 255)";
 const checkmark = "https://api.iconify.design/material-symbols-light:square.svg?color=%233584e4";
 const loadingVisual = "https://api.iconify.design/eos-icons:bubble-loading.svg?color=%23ffffff";
 
-function Card({data}) {
+function Card({data, index}) {
     // manages the selected state
     const [selected, setSelected] = useState(false);
     // monitors when the image has been loaded in the form of a state
     const [loaded, setLoaded] = useState(false);
     const imgRef = useRef(null);
-    const { selectionRef, setFullScreen} = useContext(SelectionContext);
+    const { selectionRef, setFullscreen, fullscreen } = useContext(SelectionContext);
 
     // updates the selectionRef array contents
     const handleSelect = (event) => {
@@ -35,11 +35,9 @@ function Card({data}) {
 
     const handleImgClick = (event) => {
 
-        let el = event.target;
-        if(el.requestFullScreen) {el.requestFullScreen()}
-        else if(el.mozRequestFullScreen) {el.mozRequestFullScreen()}
-        else if(el.webkitRequestFullscreen) {el.webkitRequestFullscreen()}
-        else if (el.msRequestFullscreen) {el.msRequestFullscreen()}
+        if(!fullscreen.open) {
+            setFullscreen({open: true, index: index});
+        }
     };
 
     useEffect(() => {
@@ -52,7 +50,7 @@ function Card({data}) {
     }, []);
 
     return(
-        <div className="card-container" style={{"--selected-color": cardSelectedColor}}>
+        <div id={`card-${index}`} className="card-container" style={{"--selected-color": cardSelectedColor}}>
             {
                 loaded || <img className="card-loading" src={loadingVisual}></img>
             }
