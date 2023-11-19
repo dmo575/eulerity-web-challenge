@@ -17,7 +17,7 @@ function App() {
     return(
       <form action="" className='selection-container'>
         {
-          data.map((el, index) => <Card key={`card-${index}`} index={index} data={el}/>)
+          data.map((el, index) => { return <Card key={`card-${index}`} index={index} data={el}/> })
         }
       </form>
     )
@@ -30,10 +30,10 @@ function App() {
       {data.status == "error" && (<h1>{data.msg}</h1>)}
       <SelectionContext.Provider value={{selectionRef, setFullscreen, fullscreen}}>
         {data.status == "done" && renderData(data.data)}
+      {(fullscreen.open && data.status == "done") && 
+      <ImageViewer cards={data.data} index={fullscreen.index}/>}
       </SelectionContext.Provider>
     </div>
-      {(fullscreen.open && data.status == "done") && 
-      <ImageViewer index={fullscreen.index}/>}
       </>
   )
 }

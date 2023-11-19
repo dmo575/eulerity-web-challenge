@@ -26,7 +26,6 @@ function Card({data, index}) {
         }
         else {
             selectionRef.current.push(event.target.parentNode.id);
-            console.log(selectionRef.current);
             event.target.parentNode.parentNode.classList.add("card-container-selected");
         }
         // update the state, this triggers a re-render
@@ -50,13 +49,13 @@ function Card({data, index}) {
     }, []);
 
     return(
-        <div id={`card-${index}`} className="card-container" style={{"--selected-color": cardSelectedColor}}>
+        <div id={`card-${index}`} className="card-container card-container-mobile" style={{"--selected-color": cardSelectedColor}}>
             {
                 loaded || <img className="card-loading" src={loadingVisual}></img>
             }
             
             <img ref={imgRef} onClick={handleImgClick} id={`${data.title}-img`} className="card-img" src={data.url}></img>
-            <div className="card-checkbox-container" onClick={handleSelect} style={{"--selected-color": cardSelectedColor}}>
+            <div className="card-checkbox-container card-mobile" onClick={handleSelect} style={{"--selected-color": cardSelectedColor}}>
                 <div className="card-checkbox">
                     <img className="card-checkbox-img" src={checkmark}></img>
                 </div>

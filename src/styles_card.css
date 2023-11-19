@@ -61,9 +61,26 @@
     background-color: var(--selected-color);
 }
 
+
 .card-container:hover > .card-checkbox-container,
 .card-container-selected > .card-checkbox-container {
     display: flex;
+}
+
+@media screen and (max-width: 786px) {
+
+    .card-mobile {
+        width: 2rem;
+        height: 2rem;
+        top: 0;
+        left: 0;
+        display: flex;
+    }
+
+    .card-container-selected > .card-mobile {
+        top: calc(-4px);/* unit is card-container border thickness*/
+        left: calc(-4px);
+    }
 }
 
 .card-checkbox {
@@ -100,6 +117,15 @@
 }
 
 /* Image Viewer - - - - -  -- - -- - -  -- - - -- - - - */
+.image-viewer-cont {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.651);
+    z-index: 3;
+}
 
 .image-viewer {
     position: absolute;
@@ -108,11 +134,46 @@
     width: 90%;
     height: 90%;
     background-color: black;
-    z-index: 5;
+    z-index: 4;
+}
+
+@media screen and (max-width: 786px) {
+    .image-viewer {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
 }
 
 .img-viewer-img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+.img-viewer-controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+}
+
+.img-viewer-button,
+.img-viewer-button-close {
+    width: 10rem;
+    height: auto;
+    opacity: 0.3;
+    pointer-events: all;
+}
+
+.img-viewer-button-close {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
