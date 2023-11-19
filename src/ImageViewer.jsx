@@ -18,11 +18,9 @@ function ImageViewer({cards, index}) {
     const closeViewport = () => {
         setFullscreen({open: false});
     }
-    const handleUpdate = (val) => {
-        setCurrIndex(prev => prev+val);
-    };
-    const goNext = () => {handleUpdate(1)};
-    const goPrev = () => {handleUpdate(-1)};
+    
+    const goNext = () => {setCurrIndex(currIndex+1 >= cards.length ? 0 : currIndex+1)};
+    const goPrev = () => {setCurrIndex(currIndex-1 < 0 ? cards.length-1: currIndex-1)};
 
 
     return(

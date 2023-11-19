@@ -6,36 +6,40 @@ const cardSelectedColor = "rgb(0, 110, 255)";
 const checkmark = "https://api.iconify.design/material-symbols-light:square.svg?color=%233584e4";
 const loadingVisual = "https://api.iconify.design/eos-icons:bubble-loading.svg?color=%23ffffff";
 
-function Card({data, index}) {
-    // manages the selected state
-    const [selected, setSelected] = useState(false);
+function Card({data, index: cardIndex}) {
     // monitors when the image has been loaded in the form of a state
     const [loaded, setLoaded] = useState(false);
     const imgRef = useRef(null);
-    const { selectionRef, setFullscreen, fullscreen } = useContext(SelectionContext);
+    const { selectionRef, setFullscreen, fullscreen, bp } = useContext(SelectionContext);
+
+    const isSelected = () => {
+
+        return selectionRef.current.some(el => el == cardIndex);
+    }
 
     // updates the selectionRef array contents
-    const handleSelect = (event) => {
+    const updateSelection = (event) => {
 
-        
         // if selected, des-select. And vice-versa
-        if(selected) {
-            let index = selectionRef.current.indexOf(event.target.parentNode.id);
-            selectionRef.current.splice(index, 1);
+        if(isSelected()) {
+
+            // pass in the card index.
+            //let index = selectionRef.current.indexOf(event.target.parentNode.id);
+            let i = selectionRef.current.indexOf(cardIndex);
+            selectionRef.current.splice(i, 1);
             event.target.parentNode.parentNode.classList.remove("card-container-selected");
         }
         else {
-            selectionRef.current.push(event.target.parentNode.id);
+            selectionRef.current.push(cardIndex);
             event.target.parentNode.parentNode.classList.add("card-container-selected");
         }
         // update the state, this triggers a re-render
-        setSelected(prev => !prev);
     }
 
     const handleImgClick = (event) => {
 
         if(!fullscreen.open) {
-            setFullscreen({open: true, index: index});
+            setFullscreen({open: true, index: cardIndex});
         }
     };
 
@@ -48,14 +52,16 @@ function Card({data, index}) {
         }
     }, []);
 
+
+
     return(
-        <div id={`card-${index}`} className="card-container card-container-mobile" style={{"--selected-color": cardSelectedColor}}>
+        <div id={`card-${cardIndex}`} className={`${isSelected() && "card-container-selected"} ${bp.size == "large" ? "card-container" : "card-container-mobile"}`} style={{"--selected-color": cardSelectedColor}}>
             {
                 loaded || <img className="card-loading" src={loadingVisual}></img>
             }
             
             <img ref={imgRef} onClick={handleImgClick} id={`${data.title}-img`} className="card-img" src={data.url}></img>
-            <div className="card-checkbox-container card-mobile" onClick={handleSelect} style={{"--selected-color": cardSelectedColor}}>
+            <div className={bp.size == "large" ? "card-checkbox-container" : "card-checkbox-container card-mobile"} test="card-checkbox-container card-mobile" onClick={updateSelection} style={{"--selected-color": cardSelectedColor}}>
                 <div className="card-checkbox">
                     <img className="card-checkbox-img" src={checkmark}></img>
                 </div>

@@ -8,7 +8,8 @@
 }
 
 
-.card-container {
+.card-container,
+.card-container-mobile {
     width: 10rem;
     height: 10rem;
     background-color: lightblue;
@@ -67,7 +68,7 @@
     display: flex;
 }
 
-@media screen and (max-width: 786px) {
+/*@media screen and (max-width: 786px) {*/
 
     .card-mobile {
         width: 2rem;
@@ -81,7 +82,7 @@
         top: calc(-4px);/* unit is card-container border thickness*/
         left: calc(-4px);
     }
-}
+/*}*/
 
 .card-checkbox {
     display: flex;
@@ -137,7 +138,7 @@
     z-index: 4;
 }
 
-@media screen and (max-width: 786px) {
+@media screen and (max-width: 850px) {
     .image-viewer {
         width: 100%;
         height: 100%;
