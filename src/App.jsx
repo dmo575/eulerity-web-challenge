@@ -1,8 +1,8 @@
 import { useState, useRef, createContext, useEffect } from 'react'
 import useFetch from './useFetch'
-import Button from './StyledButton';
 import Card from './Card.jsx';
 import ImageViewer from './ImageViewer.jsx';
+import OptionsBar from './OptionsBar.jsx';
 
 const url = "https://eulerity-hackathon.appspot.com/pets";
 export const SelectionContext = createContext();
@@ -14,6 +14,7 @@ function App() {
   const data = useFetch(url);
   const [bp, setBp] = useState({size: "large"});
   const bpRef = useRef(bp);
+  const [editState, setEditState] = useState(false);
 
   const handleResize = () => {
 
@@ -50,15 +51,16 @@ function App() {
 
   return (
     <>
-    <div>
+      <SelectionContext.Provider value={{selectionRef, setFullscreen, fullscreen, setEditState, bp}}>
+    <OptionsBar/>
+    <div className='cont-style cont'>
       {data.status == "loading" && (<h1>Loading data</h1>)}
       {data.status == "error" && (<h1>{data.msg}</h1>)}
-      <SelectionContext.Provider value={{selectionRef, setFullscreen, fullscreen, bp}}>
         {data.status == "done" && renderData(data.data)}
       {(fullscreen.open && data.status == "done") && 
       <ImageViewer cards={data.data} index={fullscreen.index}/>}
-      </SelectionContext.Provider>
     </div>
+      </SelectionContext.Provider>
       </>
   )
 }
