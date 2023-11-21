@@ -6,45 +6,44 @@ const cardSelectedColor = "rgb(0, 110, 255)";
 const checkmark = "https://api.iconify.design/material-symbols-light:square.svg?color=%233584e4";
 const loadingVisual = "https://api.iconify.design/eos-icons:bubble-loading.svg?color=%23ffffff";
 
-function Card({data, index: cardIndex}) {
-    // monitors when the image has been loaded in the form of a state
-    const [loaded, setLoaded] = useState(false);
+function Card({data, cardIndex}) {
+
+    // references to inner elements
     const imgRef = useRef(null);
     const cardRef = useRef(null);
-    const { selectionRef, setFullscreen, fullscreen, bp } = useContext(SelectionContext);
 
-    const isSelected = () => {
-        return selectionRef.current.some(el => el == cardIndex);
-    }
+    // monitors when the image has been loaded in the form of a state
+    const [loaded, setLoaded] = useState(false);
+
+    const { setFullscreen, fullscreen, bp, searchCards, onDisplay, onDisplayRef } = useContext(SelectionContext);
+
+    // when rendering, make sure to apply the correct styling based on selection
+    // when interacting with checkbox, make sure to update selection state
+    // 
 
     useEffect(() => {
         updateSelection();
     });
 
-    // updates the styling of the card based on whether it is selected or not.
+    // check selected status and apply proper styling
     const updateSelection = () => {
 
-        if(isSelected()) {
+        if(onDisplayRef.current[cardIndex].selected) {
             cardRef.current.classList.add("card-container-selected");
         }
         else {
             cardRef.current.classList.remove("card-container-selected");
         }
+        console.log(onDisplayRef.current);
     }
 
-    const interact = () => {
-
-        if(isSelected()) {
-            let i = selectionRef.current.indexOf(cardIndex);
-            selectionRef.current.splice(i, 1);
-        }
-        else {
-            selectionRef.current.push(cardIndex);
-        }
-
+    // select / deselect on click
+    const handleCheckbox = () => {
+        onDisplayRef.current[cardIndex].selected = !(onDisplayRef.current[cardIndex].selected);
         updateSelection();
     };
 
+    // call image viewer on click
     const handleImgClick = () => {
 
         if(!fullscreen.open) {
@@ -52,8 +51,10 @@ function Card({data, index: cardIndex}) {
         }
     };
 
+    // on mount
     useEffect(() => {
 
+        // if the image has finished loading, se its load state to true
         if(imgRef) {
             imgRef.current.onload = () => {
                 setLoaded(true);
@@ -70,7 +71,7 @@ function Card({data, index: cardIndex}) {
             }
             
             <img ref={imgRef} onClick={handleImgClick} id={`${data.title}-img`} className="card-img" src={data.url}></img>
-            <div className={bp.size == "large" ? "card-checkbox-container" : "card-checkbox-container card-mobile"} test="card-checkbox-container card-mobile" onClick={interact} style={{"--selected-color": cardSelectedColor}}>
+            <div className={bp.size == "large" ? "card-checkbox-container" : "card-checkbox-container card-mobile"} test="card-checkbox-container card-mobile" onClick={handleCheckbox} style={{"--selected-color": cardSelectedColor}}>
                 <div className="card-checkbox">
                     <img className="card-checkbox-img" src={checkmark}></img>
                 </div>

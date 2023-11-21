@@ -3,7 +3,8 @@ import { SelectionContext } from "./App";
 
 function OptionsBar() {
 
-    const {setEditState, selectionRef} = useContext(SelectionContext);
+    return (<p>closed</p>);
+    const {setEditState, selectionRef, setOnDisplay} = useContext(SelectionContext);
 
     const handleSelectAll = () => {
         // clear array
@@ -22,12 +23,25 @@ function OptionsBar() {
         setEditState(prev => !prev);
     };
 
+    const reorder = () => {
+        setOnDisplay([2,1,4,5,3,6,7,8,9,5,1,5,4,8,7,5,9,8,1,2,4,5,4,8,5,6,3]);
+    };
+
     return(
         <div className="options-bar-cont cont-style">
-            <input className="options-input" type="text"></input>
+            <input className="options-input" placeholder="Type and press ENTER" type="text"></input>
+
+            <label htmlFor="select-order">Order: </label>
+            <select name="select-order" onChange={reorder} className="options-button">
+                <option value="A-Z">Ascending</option>
+                <option value="Z-A">Descending</option>
+            </select>
+
+
 
             <button onClick={handleSelectAll} className="options-button">Select all</button>
             <button onClick={handleDeselect} className="options-button">Deselect all</button>
+            <button onClick={handleDeselect} className="options-button-download">Download</button>
 
         </div>
     );
