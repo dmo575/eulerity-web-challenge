@@ -63,7 +63,12 @@ function App() {
     });
 
     // update the onDisplayRef.current with default values
-    onDisplayRef.current = new Array(results.length).fill({selected: false, order: 0});
+    onDisplayRef.current = Array.from({length: results.length}, () => {return {selected: false, order: 0}});
+
+    // set initial order to be the index
+    onDisplayRef.current.forEach((el, index) => {
+      onDisplayRef.current[index].order = index;
+    });
 
     // update the onDisplay data with the results cards
     setOnDisplay(results);
@@ -98,14 +103,14 @@ function App() {
 
   return (
     <>
-      <SelectionContext.Provider value={{ setFullscreen, fullscreen, setEditState, bp, onDisplay, searchCards, onDisplayRef }}>
+      <SelectionContext.Provider value={{ setFullscreen, fullscreen, setEditState, bp, onDisplay, setOnDisplay, searchCards, onDisplayRef }}>
     <OptionsBar/>
     <div className='cont-style cont'>
       {data.status == "loading" && (<h1>Loading data</h1>)}
       {data.status == "error" && (<h1>{data.msg}</h1>)}
         {data.status == "done" && renderData(onDisplay)}
       {(fullscreen.open && data.status == "done") && 
-      <ImageViewer cards={data.data} index={fullscreen.index}/>}
+      <ImageViewer index={fullscreen.index}/>}
     </div>
       </SelectionContext.Provider>
       </>

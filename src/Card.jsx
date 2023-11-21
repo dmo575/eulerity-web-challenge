@@ -17,10 +17,6 @@ function Card({data, cardIndex}) {
 
     const { setFullscreen, fullscreen, bp, searchCards, onDisplay, onDisplayRef } = useContext(SelectionContext);
 
-    // when rendering, make sure to apply the correct styling based on selection
-    // when interacting with checkbox, make sure to update selection state
-    // 
-
     useEffect(() => {
         updateSelection();
     });
@@ -34,7 +30,6 @@ function Card({data, cardIndex}) {
         else {
             cardRef.current.classList.remove("card-container-selected");
         }
-        console.log(onDisplayRef.current);
     }
 
     // select / deselect on click
@@ -47,7 +42,7 @@ function Card({data, cardIndex}) {
     const handleImgClick = () => {
 
         if(!fullscreen.open) {
-            setFullscreen({open: true, index: cardIndex});
+            setFullscreen({open: true, index: onDisplayRef.current[cardIndex].order});
         }
     };
 
@@ -62,10 +57,8 @@ function Card({data, cardIndex}) {
         }
     }, []);
 
-
-
     return(
-        <div id={`card-${cardIndex}`} ref={cardRef} className={`${bp.size == "large" ? "card-container" : "card-container-mobile"}`} style={{"--selected-color": cardSelectedColor}}>
+        <div id={`card-${cardIndex}`} ref={cardRef} className={`${bp.size == "large" ? "card-container" : "card-container-mobile"}`} style={{"--selected-color": cardSelectedColor, order: onDisplayRef.current[cardIndex].order}}>
             {
                 loaded || <img className="card-loading" src={loadingVisual}></img>
             }

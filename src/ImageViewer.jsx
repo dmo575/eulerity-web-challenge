@@ -9,18 +9,28 @@ function ImageViewer({cards, index}) {
 
     const imgRef = useRef();
     const [currIndex, setCurrIndex] = useState(index);
-    const { setFullscreen } = useContext(SelectionContext);
+    const { setFullscreen, onDisplayRef, onDisplay } = useContext(SelectionContext);
 
     useEffect(() => {
-        imgRef.current.src = cards[currIndex].url;
+        
+        // we find out which card has the order we 
+        let cardIndex = 0;
+        for(let i = 0; i < onDisplayRef.current.length; i++) {
+            if(onDisplayRef.current[i].order == currIndex) {
+                cardIndex = i;
+                break;
+            }
+        }
+
+        imgRef.current.src = onDisplay[cardIndex].url;
     });
 
     const closeViewport = () => {
         setFullscreen({open: false});
     }
     
-    const goNext = () => {setCurrIndex(currIndex+1 >= cards.length ? 0 : currIndex+1)};
-    const goPrev = () => {setCurrIndex(currIndex-1 < 0 ? cards.length-1: currIndex-1)};
+    const goNext = () => {setCurrIndex(currIndex+1 >= onDisplay.length ? 0 : currIndex+1)};
+    const goPrev = () => {setCurrIndex(currIndex-1 < 0 ? onDisplay.length-1: currIndex-1)};
 
 
     return(
