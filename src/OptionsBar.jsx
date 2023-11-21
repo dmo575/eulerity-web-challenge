@@ -7,8 +7,8 @@ function OptionsBar() {
     
     const handleSelectAll = () => {
 
-        onDisplayRef.foReach(el => {
-            el.selected = true;
+        onDisplayRef.current.forEach((el, index) => {
+            onDisplayRef.current[index].selected = true;
         });
         
         setEditState(prev => !prev);
@@ -16,8 +16,8 @@ function OptionsBar() {
     
     const handleDeselect = () => {
 
-        onDisplayRef.foReach(el => {
-            el.selected = false;
+        onDisplayRef.current.forEach((el, index) => {
+            onDisplayRef.current[index].selected = false;
         });
 
         setEditState(prev => !prev);
