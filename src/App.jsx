@@ -10,11 +10,12 @@ export const SelectionContext = createContext();
 function App() {
 
   // contains array of indexes of selected cards
-  //const selectionRef = useRef([]);
+  // const selectionRef = useRef([]);
   // contains the state of the window viewer
   const [fullscreen, setFullscreen] = useState({open: false, index: 0});
   // contains data of all the cards
   const data = useFetch(url);
+  const dataRef = useRef(data);
   // the breakpoint state
   const [bp, setBp] = useState({size: "large"});
   // a reference to the breakpoint state
@@ -25,6 +26,7 @@ function App() {
   const [onDisplay, setOnDisplay] = useState([]);
   const onDisplayRef = useRef([]);
 
+
   const handleResize = () => {
 
     // quick 2-level breakpoint so I can add some responsive features
@@ -33,7 +35,10 @@ function App() {
     if(w < 850 && bpRef.size != "small") {
       setBp({size: "small"});
     }
-    else if(w >= 850 && bpRef.size != "large") {
+    else if(w < 1000 && bpRef.size != "medium") {
+      setBp({size: "medium"});
+    }
+    else if(w >= 1000 && bpRef.size != "large") {
       setBp({size: "large"});
     }
   };
@@ -56,8 +61,8 @@ function App() {
     const results = [];
 
     // for each data element, run the filter test on them and push it to results if it passes
-    data.data.forEach(el => {
-      if(filter(el)) {
+    dataRef.current.data.forEach((el, index) => {
+      if(filter(el, index)) {
         results.push(el);
       }
     });
@@ -80,6 +85,7 @@ function App() {
   useEffect(() => {
     // once we get the data, populate the onDisplay array with its initial value (all the cards)
 
+    dataRef.current = data;
     // if the data has finished loading:
     if(data.status == "done") {
       searchCards(() => true);
@@ -103,10 +109,10 @@ function App() {
 
   return (
     <>
-      <SelectionContext.Provider value={{ setFullscreen, fullscreen, setEditState, bp, onDisplay, setOnDisplay, searchCards, onDisplayRef }}>
+      <SelectionContext.Provider value={{ setFullscreen, dataRef, fullscreen, setEditState, bp, onDisplay, setOnDisplay, searchCards, onDisplayRef }}>
     <OptionsBar/>
-    <div className='cont-style cont'>
-      {data.status == "loading" && (<h1>Loading data</h1>)}
+    <div className={`cont-style cont${bp.size == "small" && "-mobile" || ""}`}>
+      {data.status == "loading" && (<h1 className='loading-data'>Loading data . . .</h1>)}
       {data.status == "error" && (<h1>{data.msg}</h1>)}
         {data.status == "done" && renderData(onDisplay)}
       {(fullscreen.open && data.status == "done") && 

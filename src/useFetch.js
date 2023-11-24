@@ -39,6 +39,7 @@ function useFetch(url) {
                 status: "done",
                 data: data
             });
+            
         };
 
         requestData();

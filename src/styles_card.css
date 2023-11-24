@@ -8,6 +8,12 @@ body {
     padding: 5rem;
 }
 
+.cont-mobile {
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    width: 90%;
+}
+
 .selection-container {
     display: flex;
     flex-wrap: wrap; /* helps us with responsiveness */
@@ -229,4 +235,30 @@ body {
 
 .options-button-download {
     background-color: rgb(0, 201, 50);
+}
+
+.search-by-cont {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loading-data {
+    text-align: center;
+}
+
+.sub-search,
+.sub-buttons {
+    display: flex;
+}
+
+.sub-search-mobile {
+    flex-direction: column;
+
+}
+
+.sub-buttons-mobile {
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 1rem;
 }
